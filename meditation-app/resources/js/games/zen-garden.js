@@ -1,12 +1,10 @@
-// Zen Garden — rake sand into patterns. Place stones. Breathe slowly.
-// Canvas-based. Two layers: rake marks below, stones on top (so rake flows
-// naturally around stones — the stones visually occlude the grooves).
+// Zen Garden — rake sand, place stones. Canvas-based.
 
-const TINES          = 7;       // number of rake teeth
-const TINE_SPACING   = 7;       // px between tines
-const TINE_WIDTH     = 1.6;     // stroke width
-const GROOVE_ALPHA   = 0.55;    // darkness of each groove
-const SMOOTH_RADIUS  = 38;      // smoothing brush radius
+const TINES          = 7;
+const TINE_SPACING   = 7;
+const TINE_WIDTH     = 1.6;
+const GROOVE_ALPHA   = 0.55;
+const SMOOTH_RADIUS  = 38;
 const STONE_COLORS   = [
     ['#3e3a36', '#1a1816'],
     ['#4a443f', '#24211e'],
@@ -36,35 +34,35 @@ export function init(root) {
 
             <div class="zg-hud">
                 <div class="zg-brand">
-                    <span class="zg-brand-kicker">Mindful play</span>
-                    <span class="zg-brand-title">Zen Garden</span>
+                    <span class="zg-brand-kicker">Apzināta spēle</span>
+                    <span class="zg-brand-title">Zen dārzs</span>
                 </div>
             </div>
 
-            <div class="zg-toolbar" role="toolbar" aria-label="Tools">
-                <button type="button" class="zg-tool is-active" data-tool="rake" aria-pressed="true" title="Rake (R)">
+            <div class="zg-toolbar" role="toolbar" aria-label="Rīki">
+                <button type="button" class="zg-tool is-active" data-tool="rake" aria-pressed="true" title="Grābeklis (R)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
                         <path d="M4 18c3-3 6-3 8 0s5 3 8 0"/>
                         <path d="M4 14c3-3 6-3 8 0s5 3 8 0"/>
                         <path d="M4 10c3-3 6-3 8 0s5 3 8 0"/>
                     </svg>
-                    <span>Rake</span>
+                    <span>Grābeklis</span>
                 </button>
-                <button type="button" class="zg-tool" data-tool="stone" aria-pressed="false" title="Stone (S)">
+                <button type="button" class="zg-tool" data-tool="stone" aria-pressed="false" title="Akmens (S)">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <ellipse cx="12" cy="13" rx="8" ry="5.5"/>
                     </svg>
-                    <span>Stone</span>
+                    <span>Akmens</span>
                 </button>
-                <button type="button" class="zg-tool" data-tool="smooth" aria-pressed="false" title="Smooth (E)">
+                <button type="button" class="zg-tool" data-tool="smooth" aria-pressed="false" title="Izlīdzināt (E)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 16c4-2 8-2 12 0s4 2 4 2"/>
                         <path d="M4 12c4-2 8-2 12 0s4 2 4 2"/>
                     </svg>
-                    <span>Smooth</span>
+                    <span>Izlīdzināt</span>
                 </button>
                 <div class="zg-tool-divider"></div>
-                <button type="button" class="zg-tool-ghost" data-action="clear" title="Clear garden">
+                <button type="button" class="zg-tool-ghost" data-action="clear" title="Notīrīt dārzu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 6h18"/>
                         <path d="M8 6V4.5A1.5 1.5 0 019.5 3h5A1.5 1.5 0 0116 4.5V6"/>
@@ -73,7 +71,7 @@ export function init(root) {
                 </button>
             </div>
 
-            <div class="zg-hint" data-hint>Drag across the sand to rake gentle patterns.</div>
+            <div class="zg-hint" data-hint>Velc pa smiltīm, lai izveidotu maigus rakstus.</div>
         </div>
     `;
 
@@ -88,7 +86,6 @@ export function init(root) {
     const rake   = rakeCanvas.getContext('2d');
     const stones = stonesCanvas.getContext('2d');
 
-    // Lazy DPR + sizing.
     const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
     let W = 0, H = 0;
 
@@ -97,13 +94,12 @@ export function init(root) {
         pointerDown: false,
         lastX: 0,
         lastY: 0,
-        stones: [],            // { x, y, rx, ry, rot, palette, seed, born }
+        stones: [],
         hasInteracted: false,
-        // Per-stroke state — reset on every fresh pointerdown.
         stroke: {
-            prev: null,            // last smoothed point { x, y }
-            lastMids: [],          // midpoint of last drawn segment per tine (groove layer)
-            lastMidsHi: [],        // same, for highlight layer
+            prev: null,
+            lastMids: [],
+            lastMidsHi: [],
         },
     };
 
@@ -124,7 +120,6 @@ export function init(root) {
         redrawStones();
     }
 
-    // Place a trio of stones at pleasing spots when first mounted.
     function seedStones() {
         const pts = [
             { xr: 0.30, yr: 0.55, size: 1.0 },
@@ -163,7 +158,6 @@ export function init(root) {
             const age = now - s.born;
             if (age < 420) {
                 const t = age / 420;
-                // Overshoot → settle.
                 scale = t < 0.6
                     ? easeOutBack(t / 0.6)
                     : 1 + (Math.sin((t - 0.6) * Math.PI * 4) * 0.03 * (1 - (t - 0.6) / 0.4));
@@ -178,7 +172,6 @@ export function init(root) {
         ctx.rotate(s.rot);
         ctx.scale(scale, scale);
 
-        // Ground shadow — long & soft.
         ctx.save();
         ctx.translate(3, 4);
         ctx.filter = 'blur(6px)';
@@ -188,7 +181,6 @@ export function init(root) {
         ctx.fill();
         ctx.restore();
 
-        // Stone body gradient.
         const grad = ctx.createRadialGradient(
             -s.rx * 0.35, -s.ry * 0.6, s.ry * 0.2,
             0, 0, s.rx
@@ -200,14 +192,12 @@ export function init(root) {
         ctx.ellipse(0, 0, s.rx, s.ry, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Subtle rim light.
         ctx.strokeStyle = 'rgba(255, 245, 220, 0.10)';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.ellipse(0, 0, s.rx - 0.5, s.ry - 0.5, 0, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Highlight streak.
         ctx.save();
         ctx.globalAlpha = 0.18;
         ctx.fillStyle = '#ffffff';
@@ -219,15 +209,9 @@ export function init(root) {
         ctx.restore();
     }
 
-    // ── Rake drawing (smooth) ───────────────────────────────
-    // Technique: EMA-smooth the input pointer stream, then draw each new
-    // segment as a quadratic Bézier curve from the *previous midpoint*,
-    // through the current raw point (used as control), to the new midpoint.
-    // This is the classic "midpoint smoothing" trick used by drawing apps —
-    // curves blend seamlessly at each point and hide direction-change kinks.
-
-    const RAKE_EMA      = 0.5;   // 0 = no movement (laggy), 1 = no smoothing (raw)
-    const MIN_STEP_DIST = 1.25;  // ignore micro-jitter below this distance
+    // Midpoint-smoothing for rake strokes.
+    const RAKE_EMA      = 0.5;
+    const MIN_STEP_DIST = 1.25;
 
     function rakeStart(x, y) {
         state.stroke.prev = { x, y };
@@ -266,7 +250,6 @@ export function init(root) {
         rake.lineCap  = 'round';
         rake.lineJoin = 'round';
 
-        // Groove pass (dark).
         rake.lineWidth   = TINE_WIDTH;
         rake.strokeStyle = `rgba(105, 82, 50, ${GROOVE_ALPHA})`;
         for (let i = 0; i < TINES; i++) {
@@ -287,7 +270,6 @@ export function init(root) {
             state.stroke.lastMids[i] = { x: mx, y: my };
         }
 
-        // Highlight pass (thin cream line, shifted perpendicularly).
         rake.lineWidth   = 0.8;
         rake.strokeStyle = 'rgba(255, 248, 225, 0.22)';
         for (let i = 0; i < TINES; i++) {
@@ -311,7 +293,6 @@ export function init(root) {
         rake.restore();
     }
 
-    // Tiny mark for single clicks (no drag).
     function rakeStamp(x, y) {
         const half = (TINES - 1) / 2;
         rake.save();
@@ -328,7 +309,6 @@ export function init(root) {
         rake.restore();
     }
 
-    // Smooth / erase tool — soft radial erase with destination-out.
     function smoothStroke(x0, y0, x1, y1) {
         const steps = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 4));
         rake.save();
@@ -350,8 +330,6 @@ export function init(root) {
         rake.restore();
     }
 
-    // ── Pointer handlers ────────────────────────────────────
-
     function pointFrom(e) {
         const rect = scene.getBoundingClientRect();
         return { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -369,7 +347,6 @@ export function init(root) {
     }
 
     function onPointerDown(e) {
-        // Let toolbar / hud clicks through — they're interactive controls.
         if (e.target.closest('.zg-toolbar, .zg-hud, .zg-hint')) return;
 
         e.preventDefault();
@@ -383,7 +360,6 @@ export function init(root) {
         if (state.tool === 'stone') {
             const hit = stoneHitIndex(x, y);
             if (hit >= 0) {
-                // Remove stone on click.
                 state.stones.splice(hit, 1);
                 redrawStones();
             } else {
@@ -431,8 +407,6 @@ export function init(root) {
     scene.addEventListener('pointerenter', onPointerEnter);
     scene.addEventListener('pointerleave', onPointerLeave);
 
-    // ── Tool switching ──────────────────────────────────────
-
     function setTool(tool) {
         state.tool = tool;
         toolBtns.forEach(b => {
@@ -458,7 +432,6 @@ export function init(root) {
         redrawStones();
     });
 
-    // Keyboard shortcuts.
     function onKey(e) {
         const tag = (e.target && e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea') return;
@@ -467,8 +440,6 @@ export function init(root) {
         else if (e.key === 'e' || e.key === 'E') setTool('smooth');
     }
     window.addEventListener('keydown', onKey);
-
-    // ── Stone placement animations ──────────────────────────
 
     let animationId = null;
     function animateStones() {
@@ -491,14 +462,11 @@ export function init(root) {
         hint.classList.add('is-gone');
     }
 
-    // ── Lifecycle ───────────────────────────────────────────
-
     resize();
     seedStones();
     updateCursor();
 
     const ro = new ResizeObserver(() => {
-        // Save rake canvas, resize, redraw.
         const tmp = document.createElement('canvas');
         tmp.width  = rakeCanvas.width;
         tmp.height = rakeCanvas.height;
@@ -506,7 +474,6 @@ export function init(root) {
 
         resize();
 
-        // Restore rake marks scaled to new size.
         rake.save();
         rake.setTransform(1, 0, 0, 1, 0, 0);
         rake.drawImage(tmp, 0, 0, rakeCanvas.width, rakeCanvas.height);
@@ -526,15 +493,12 @@ export function init(root) {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// ── helpers ─────────────────────────────────────────────────
-
 function easeOutBack(t) {
     const c1 = 1.70158;
     const c3 = c1 + 1;
     return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 }
 
-// ── styles ──────────────────────────────────────────────────
 const STYLES = `
 .zg-scene {
     position: absolute; inset: 0;
@@ -545,7 +509,6 @@ const STYLES = `
     touch-action: none;
     user-select: none;
 }
-/* Toolbar / hud / hint are real UI — restore the normal cursor over them. */
 .zg-scene .zg-toolbar,
 .zg-scene .zg-toolbar *,
 .zg-scene .zg-hud,
@@ -553,7 +516,6 @@ const STYLES = `
 .zg-scene .zg-tool,
 .zg-scene .zg-tool-ghost { cursor: pointer; }
 
-/* Warm sand base with subtle variation */
 .zg-sand {
     position: absolute; inset: 0;
     background:
@@ -561,7 +523,6 @@ const STYLES = `
         radial-gradient(ellipse at 75% 70%, #d8c79e 0%, transparent 60%),
         linear-gradient(135deg, #e9d8b4 0%, #d9c59c 100%);
 }
-/* Fine grain noise via repeating SVG */
 .zg-sand::before {
     content: '';
     position: absolute; inset: 0;
@@ -570,7 +531,6 @@ const STYLES = `
     mix-blend-mode: multiply;
     pointer-events: none;
 }
-/* Outer vignette */
 .zg-sand::after {
     content: '';
     position: absolute; inset: 0;
@@ -586,7 +546,6 @@ const STYLES = `
 .zg-rake-canvas   { z-index: 1; }
 .zg-stones-canvas { z-index: 2; }
 
-/* Custom cursor */
 .zg-cursor {
     position: absolute;
     left: 0; top: 0;
@@ -609,7 +568,6 @@ const STYLES = `
     border-color: rgba(30, 25, 20, 0.7);
 }
 
-/* HUD (title) */
 .zg-hud {
     position: absolute;
     top: 20px; left: 24px;
@@ -631,7 +589,6 @@ const STYLES = `
     color: rgba(45, 30, 15, 0.85);
 }
 
-/* Toolbar */
 .zg-toolbar {
     position: absolute;
     top: 18px; right: 22px;
@@ -686,7 +643,6 @@ const STYLES = `
 .zg-tool-ghost:hover { color: rgba(120, 30, 15, 0.9); background: rgba(120, 30, 15, 0.08); }
 .zg-tool-ghost svg { width: 15px; height: 15px; }
 
-/* Hint */
 .zg-hint {
     position: absolute;
     bottom: 22px; left: 50%;

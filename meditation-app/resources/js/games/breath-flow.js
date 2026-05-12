@@ -1,33 +1,31 @@
-// Breath Flow — minimal guided breathing.
-// A still inner dot, a breathing ring, a horizontal line that rises on inhale
-// and falls on exhale. A session timer counts elapsed minutes.
+// Breath Flow — guided breathing patterns.
 
 const PATTERNS = {
     relax: {
-        label: 'Relax',
+        label: 'Atslābt',
         sub: '4 · 7 · 8',
         phases: [
-            { name: 'inhale',      text: 'Inhale', duration: 4, fromLevel: 0, toLevel: 1 },
-            { name: 'hold-top',    text: 'Hold',   duration: 7, fromLevel: 1, toLevel: 1 },
-            { name: 'exhale',      text: 'Exhale', duration: 8, fromLevel: 1, toLevel: 0 },
+            { name: 'inhale',      text: 'Ieelpo', duration: 4, fromLevel: 0, toLevel: 1 },
+            { name: 'hold-top',    text: 'Aizturi',   duration: 7, fromLevel: 1, toLevel: 1 },
+            { name: 'exhale',      text: 'Izelpo', duration: 8, fromLevel: 1, toLevel: 0 },
         ],
     },
     box: {
-        label: 'Box',
+        label: 'Kvadrāts',
         sub: '4 · 4 · 4 · 4',
         phases: [
-            { name: 'inhale',      text: 'Inhale', duration: 4, fromLevel: 0, toLevel: 1 },
-            { name: 'hold-top',    text: 'Hold',   duration: 4, fromLevel: 1, toLevel: 1 },
-            { name: 'exhale',      text: 'Exhale', duration: 4, fromLevel: 1, toLevel: 0 },
-            { name: 'hold-bottom', text: 'Rest',   duration: 4, fromLevel: 0, toLevel: 0 },
+            { name: 'inhale',      text: 'Ieelpo', duration: 4, fromLevel: 0, toLevel: 1 },
+            { name: 'hold-top',    text: 'Aizturi',   duration: 4, fromLevel: 1, toLevel: 1 },
+            { name: 'exhale',      text: 'Izelpo', duration: 4, fromLevel: 1, toLevel: 0 },
+            { name: 'hold-bottom', text: 'Atpūta',   duration: 4, fromLevel: 0, toLevel: 0 },
         ],
     },
     calm: {
-        label: 'Calm',
+        label: 'Miers',
         sub: '5 · 5',
         phases: [
-            { name: 'inhale', text: 'Inhale', duration: 5, fromLevel: 0, toLevel: 1 },
-            { name: 'exhale', text: 'Exhale', duration: 5, fromLevel: 1, toLevel: 0 },
+            { name: 'inhale', text: 'Ieelpo', duration: 5, fromLevel: 0, toLevel: 1 },
+            { name: 'exhale', text: 'Izelpo', duration: 5, fromLevel: 1, toLevel: 0 },
         ],
     },
 };
@@ -53,11 +51,11 @@ export function init(root) {
             <div class="bf-timer" data-timer>00:00</div>
 
             <div class="bf-corner bf-corner-left">
-                <span class="bf-corner-label">Cycles</span>
+                <span class="bf-corner-label">Cikli</span>
                 <span class="bf-corner-value" data-cycles>0</span>
             </div>
 
-            <div class="bf-pattern" role="tablist" aria-label="Breathing pattern">
+            <div class="bf-pattern" role="tablist" aria-label="Elpošanas raksts">
                 ${Object.entries(PATTERNS).map(([key, p]) => `
                     <button type="button"
                             class="bf-pattern-btn ${key === 'relax' ? 'is-active' : ''}"
@@ -88,14 +86,14 @@ export function init(root) {
             </div>
 
             <div class="bf-footer">
-                <div class="bf-phase" data-phase>Ready</div>
+                <div class="bf-phase" data-phase>Gatavs</div>
                 <div class="bf-bar">
                     <div class="bf-bar-fill" data-bar></div>
                 </div>
             </div>
 
             <div class="bf-controls">
-                <button type="button" class="bf-btn" data-play aria-label="Start">
+                <button type="button" class="bf-btn" data-play aria-label="Sākt">
                     <svg data-icon-play xmlns="http://www.w3.org/2000/svg" class="bf-icon" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M8 5.14v13.72a1 1 0 001.53.85l11-6.86a1 1 0 000-1.7l-11-6.86A1 1 0 008 5.14z"/>
                     </svg>
@@ -103,9 +101,9 @@ export function init(root) {
                         <rect x="6.5" y="5" width="4" height="14" rx="1.2"/>
                         <rect x="13.5" y="5" width="4" height="14" rx="1.2"/>
                     </svg>
-                    <span data-play-label>Begin</span>
+                    <span data-play-label>Sākt</span>
                 </button>
-                <button type="button" class="bf-btn-ghost" data-reset aria-label="Reset">
+                <button type="button" class="bf-btn-ghost" data-reset aria-label="Atiestatīt">
                     <svg xmlns="http://www.w3.org/2000/svg" class="bf-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 12a9 9 0 0115.5-6.3L21 8"/>
                         <path d="M21 3v5h-5"/>
@@ -149,11 +147,8 @@ export function init(root) {
     const phase   = () => pattern().phases[state.phaseIndex];
 
     function setLevel(level) {
-        // level 0 (empty) → scale = MIN_SCALE, line at bottom.
-        // level 1 (full)  → scale = MAX_SCALE, line at top.
         const scale = MIN_SCALE + (MAX_SCALE - MIN_SCALE) * level;
         els.ball.style.transform = `translate(-50%, -50%) scale(${scale})`;
-        // Line moves vertically inside the ball. y=0 at top, y=100% at bottom.
         els.line.style.transform = `translateY(${(1 - level) * 100}%)`;
     }
 
@@ -198,7 +193,6 @@ export function init(root) {
         setLevel(level);
         setBar(t);
 
-        // Session timer.
         const totalElapsed = state.sessionElapsed + (now - state.sessionStart) / 1000;
         els.timer.textContent = formatTime(totalElapsed);
 
@@ -221,7 +215,7 @@ export function init(root) {
         els.play.classList.add('is-playing');
         els.playIcon.classList.add('bf-hidden');
         els.pauseIcon.classList.remove('bf-hidden');
-        els.playLabel.textContent = 'Pause';
+        els.playLabel.textContent = 'Pauzēt';
         els.scene.classList.add('is-running');
 
         const now = performance.now();
@@ -247,7 +241,7 @@ export function init(root) {
         els.play.classList.remove('is-playing');
         els.playIcon.classList.remove('bf-hidden');
         els.pauseIcon.classList.add('bf-hidden');
-        els.playLabel.textContent = 'Resume';
+        els.playLabel.textContent = 'Turpināt';
         els.scene.classList.remove('is-running');
     }
 
@@ -262,8 +256,8 @@ export function init(root) {
         els.scene.dataset.phase = '';
         setLevel(0);
         setBar(0);
-        setPhaseText('Ready');
-        els.playLabel.textContent = 'Begin';
+        setPhaseText('Gatavs');
+        els.playLabel.textContent = 'Sākt';
     }
 
     function choosePattern(key) {
@@ -277,7 +271,6 @@ export function init(root) {
         reset();
     }
 
-    // --- wiring ---
     els.play.addEventListener('click', () => state.running ? pause() : play());
     els.reset.addEventListener('click', reset);
     els.patternBtns.forEach(btn => {
@@ -294,7 +287,6 @@ export function init(root) {
     }
     window.addEventListener('keydown', onKey);
 
-    // Initial paint.
     setLevel(0);
     setBar(0);
 
@@ -309,8 +301,6 @@ export function init(root) {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// --- helpers ---
-
 function easeInOutSine(t) {
     return 0.5 - 0.5 * Math.cos(Math.PI * t);
 }
@@ -321,7 +311,6 @@ function bump(el) {
     el.classList.add('bf-bump');
 }
 
-// --- styles ---
 const STYLES = `
 .bf-scene {
     position: absolute; inset: 0;
@@ -336,7 +325,6 @@ const STYLES = `
         oklch(var(--b1));
 }
 
-/* ── Session timer ──────────────────────────────────────── */
 .bf-timer {
     font-family: 'DM Sans', sans-serif;
     font-size: 2rem;
@@ -347,7 +335,6 @@ const STYLES = `
     margin-bottom: 8px;
 }
 
-/* ── Corner HUD (cycles) ────────────────────────────────── */
 .bf-corner {
     position: absolute;
     top: 24px;
@@ -376,7 +363,6 @@ const STYLES = `
     100% { transform: scale(1); }
 }
 
-/* ── Pattern selector ───────────────────────────────────── */
 .bf-pattern {
     position: absolute;
     top: 24px; right: 28px;
@@ -417,7 +403,6 @@ const STYLES = `
     font-variant-numeric: tabular-nums;
 }
 
-/* ── Stage (the circle area) ────────────────────────────── */
 .bf-stage {
     position: relative;
     width: min(360px, 72vmin);
@@ -427,7 +412,6 @@ const STYLES = `
     margin-bottom: 4px;
 }
 
-/* Outer static ring */
 .bf-outer-ring {
     position: absolute; inset: 0;
     border-radius: 9999px;
@@ -435,7 +419,6 @@ const STYLES = `
     pointer-events: none;
 }
 
-/* Breathing ball wrapper — scales with breath */
 .bf-ball {
     position: absolute;
     left: 50%; top: 50%;
@@ -446,7 +429,6 @@ const STYLES = `
     will-change: transform;
 }
 
-/* Soft outer halo — sits behind the core */
 .bf-ball-glow {
     position: absolute; inset: -8%;
     border-radius: 9999px;
@@ -456,7 +438,6 @@ const STYLES = `
     z-index: 0;
 }
 
-/* The ball's visible body — solid, clearly visible */
 .bf-ball-core {
     position: absolute; inset: 0;
     border-radius: 9999px;
@@ -473,7 +454,6 @@ const STYLES = `
     transition: filter 1s ease;
 }
 
-/* Horizontal breath line — clipped to the ball's circular shape */
 .bf-line-clip {
     position: absolute; inset: 0;
     border-radius: 9999px;
@@ -512,7 +492,6 @@ const STYLES = `
     filter: blur(6px);
 }
 
-/* Small static center dot — a point of focus */
 .bf-center-dot {
     position: absolute;
     left: 50%; top: 50%;
@@ -530,13 +509,11 @@ const STYLES = `
     z-index: 3;
 }
 
-/* Phase-based subtle tints on the core */
 .bf-scene[data-phase="hold-top"] .bf-ball-core,
 .bf-scene[data-phase="hold-bottom"] .bf-ball-core {
     filter: saturate(0.85) brightness(0.98);
 }
 
-/* ── Footer: phase + progress bar ───────────────────────── */
 .bf-footer {
     display: flex; flex-direction: column; align-items: center;
     gap: 14px;
@@ -578,7 +555,6 @@ const STYLES = `
     transition: transform 0.08s linear;
 }
 
-/* ── Controls ───────────────────────────────────────────── */
 .bf-controls {
     position: absolute;
     bottom: 24px; left: 50%;

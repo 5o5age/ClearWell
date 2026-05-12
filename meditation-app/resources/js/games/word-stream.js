@@ -1,27 +1,25 @@
-// Word Stream — calm words drift right→left, type them to dissolve.
-// No fail state, no timer. Combo grows with consecutive clears.
+// Word Stream — type drifting words to clear them.
 
 const WORDS = [
-    'calm','still','peace','flow','wave','quiet','pure','rest','soft','mind',
-    'river','stone','cloud','light','sky','moss','leaf','pine','dawn','dusk',
-    'mist','glow','deep','slow','hush','warm','tide','lake','breath','forest',
-    'petal','sigh','open','here','now','grace','kind','ease','safe','home',
-    'dream','float','gentle','bloom','shade','ripple','linger','settle',
+    'miers','klusums','plūsma','vilnis','tīrs','atpūta','maigs','prāts','elpa',
+    'upe','akmens','mākonis','gaisma','debesis','sūnas','lapa','priede','rīts',
+    'migla','dziļš','lēns','ezers','mežs','sapnis','peldēt','klusa','silti','mājas',
+    'ziedēt','ēna','vilnītis','sirds','rasa','dvēsele','klausies','dzirdi','redzi',
+    'rosa','ziedi','siltums','spožums','sapņot','elpot','plūst','kavēties','liegs','vakars',
 ];
 
-const SPEED_PX_PER_SEC = 55;          // base drift speed
-const SPEED_JITTER     = 25;          // ±per-word variance
+const SPEED_PX_PER_SEC = 55;
+const SPEED_JITTER     = 25;
 const SPAWN_MIN_MS     = 1600;
 const SPAWN_MAX_MS     = 2800;
-const DRIFT_AMPLITUDE  = 18;          // vertical wobble
-const DRIFT_FREQ       = 0.0005;      // wobble speed
+const DRIFT_AMPLITUDE  = 18;
+const DRIFT_FREQ       = 0.0005;
 
 export function init(root) {
     root.innerHTML = '';
     root.classList.remove('items-center', 'justify-center');
     root.classList.add('relative');
 
-    // Inject scoped styles once.
     if (!document.getElementById('word-stream-styles')) {
         const style = document.createElement('style');
         style.id = 'word-stream-styles';
@@ -29,36 +27,32 @@ export function init(root) {
         document.head.appendChild(style);
     }
 
-    // Scene
     const scene = document.createElement('div');
     scene.className = 'ws-scene';
     root.appendChild(scene);
 
-    // HUD
     const hud = document.createElement('div');
     hud.className = 'ws-hud';
     hud.innerHTML = `
         <div class="ws-stat">
-            <span class="ws-stat-label">Cleared</span>
+            <span class="ws-stat-label">Notīrīti</span>
             <span class="ws-stat-value" data-score>0</span>
         </div>
         <div class="ws-stat">
-            <span class="ws-stat-label">Combo</span>
+            <span class="ws-stat-label">Kombo</span>
             <span class="ws-stat-value" data-combo>0</span>
         </div>
     `;
     root.appendChild(hud);
 
-    // Buffer indicator (what you're typing)
     const buffer = document.createElement('div');
     buffer.className = 'ws-buffer';
-    buffer.textContent = 'Start typing…';
+    buffer.textContent = 'Sāc rakstīt…';
     root.appendChild(buffer);
 
-    // State
     const state = {
-        words: [],           // { el, text, typed, x, y, baseY, speed, phase, done }
-        active: null,        // currently locked word (first match wins)
+        words: [],
+        active: null,
         score: 0,
         combo: 0,
         bestCombo: 0,
@@ -71,27 +65,22 @@ export function init(root) {
     const scoreEl = hud.querySelector('[data-score]');
     const comboEl = hud.querySelector('[data-combo]');
 
-    // Main loop
     let lastFrame = performance.now();
     function frame(now) {
         if (!state.running) return;
         const dt = (now - lastFrame) / 1000;
         lastFrame = now;
 
-        // Spawn
         if (now - state.startTime - state.lastSpawn > state.nextSpawnDelay) {
             spawnWord(scene, state);
             state.lastSpawn = now - state.startTime;
             state.nextSpawnDelay = rand(SPAWN_MIN_MS, SPAWN_MAX_MS);
         }
 
-        // Ensure at least 2 words present
         if (state.words.length < 2 && now - state.startTime > 400) {
             spawnWord(scene, state);
         }
 
-        // Update positions
-        const sceneWidth = scene.clientWidth;
         for (let i = state.words.length - 1; i >= 0; i--) {
             const w = state.words[i];
             if (w.done) continue;
@@ -99,12 +88,10 @@ export function init(root) {
             const bob = Math.sin(now * DRIFT_FREQ + w.phase) * DRIFT_AMPLITUDE;
             w.el.style.transform = `translate3d(${w.x}px, ${w.baseY + bob}px, 0)`;
 
-            // Fade near left edge
             if (w.x < 80) {
                 w.el.style.opacity = Math.max(0, w.x / 80).toFixed(2);
             }
 
-            // Off-screen: soft escape, break combo
             if (w.x + w.el.offsetWidth < -40) {
                 removeWord(state, w);
                 breakCombo(state, comboEl);
@@ -115,17 +102,15 @@ export function init(root) {
     }
     requestAnimationFrame(frame);
 
-    // Input
     function onKey(e) {
         if (e.metaKey || e.ctrlKey || e.altKey) return;
-        if (e.key === 'Backspace') { resetActive(state); buffer.textContent = 'Start typing…'; return; }
+        if (e.key === 'Backspace') { resetActive(state); buffer.textContent = 'Sāc rakstīt…'; return; }
         if (e.key.length !== 1) return;
         const ch = e.key.toLowerCase();
-        if (!/[a-z]/.test(ch)) return;
+        if (!/[a-zāčēģīķļņōŗšūž]/.test(ch)) return;
 
         e.preventDefault();
 
-        // Pick active if none
         if (!state.active) {
             const candidate = pickWord(state, ch);
             if (!candidate) { flashBuffer(buffer, false); return; }
@@ -142,10 +127,9 @@ export function init(root) {
             buffer.classList.remove('ws-buffer-err');
             if (w.typed >= w.text.length) {
                 completeWord(scene, state, w, scoreEl, comboEl);
-                buffer.textContent = 'Start typing…';
+                buffer.textContent = 'Sāc rakstīt…';
             }
         } else {
-            // Wrong key — release word, reset
             w.typed = 0;
             renderWord(w);
             w.el.classList.remove('ws-word-active');
@@ -154,12 +138,11 @@ export function init(root) {
             state.active = null;
             breakCombo(state, comboEl);
             flashBuffer(buffer, false);
-            buffer.textContent = 'Start typing…';
+            buffer.textContent = 'Sāc rakstīt…';
         }
     }
     window.addEventListener('keydown', onKey);
 
-    // Cleanup if the root is ever detached.
     const observer = new MutationObserver(() => {
         if (!document.body.contains(root)) {
             state.running = false;
@@ -169,8 +152,6 @@ export function init(root) {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 }
-
-// ---------- helpers ----------
 
 function rand(min, max) { return min + Math.random() * (max - min); }
 
@@ -206,7 +187,6 @@ function renderWord(w) {
 }
 
 function pickWord(state, ch) {
-    // Leftmost visible word starting with `ch` wins.
     let best = null;
     for (const w of state.words) {
         if (w.done) continue;
@@ -235,7 +215,6 @@ function completeWord(scene, state, w, scoreEl, comboEl) {
     bumpEl(scoreEl);
     bumpEl(comboEl);
 
-    // Burst
     const rect = w.el.getBoundingClientRect();
     const sceneRect = scene.getBoundingClientRect();
     const cx = rect.left - sceneRect.left + rect.width / 2;
@@ -292,7 +271,6 @@ function bumpEl(el) {
     el.classList.add('ws-bump');
 }
 
-// ---------- styles ----------
 const STYLES = `
 .ws-scene {
     position: absolute; inset: 0;
