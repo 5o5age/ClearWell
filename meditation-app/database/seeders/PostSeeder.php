@@ -281,6 +281,86 @@ Beyond that, most long-term practitioners describe something harder to summarise
 The ten-year version of you is not a calmer version of the current you. It is a differently-organised you, shaped by ten thousand small acts of returning your attention to where it actually is. That person is worth becoming. But you only get there one morning at a time.
 TXT,
             ],
+            [
+                'title' => 'Apzinātība ikdienas dzīvē',
+                'body' => <<<'TXT'
+Apzinātība nav tikai prakse uz spilvena — tā ir prasme, ko var ienest jebkurā ikdienas brīdī.
+
+Apzinātības definīcija ir vienkārša: tā ir uzmanība, kas ar nodomu vērsta uz tagadnes mirkli, bez vērtējuma. Šī definīcija izklausās viegla, tomēr lielāko daļu dienas pavadām, domājot par to, kas tikko notika, vai par to, kas vēl varētu notikt.
+
+Apzinātību var ienest jebkurā ikdienas darbā. Mazgājot zobus, pievērs uzmanību sukas kustībai, garšai, ūdens temperatūrai. Iedzerot rīta kafiju, pamani tās siltumu rokā un aromātu pirmajā malkā. Ejot uz darbu, jūti pēdas, kas saskaras ar zemi.
+
+Šādi mazi mirkļi nešķiet svarīgi, bet tie veido pamatu lielākai pārmaiņai. Cilvēks, kurš ikdienā praktizē apzinātību, dzīvo savā dzīvē, nevis tikai paskrien tai garām.
+
+Sāc ar vienu darbību dienā. Izvēlies kaut ko, ko jau dari katru rītu — apģērbšanos, zobu tīrīšanu, durvju aizvēršanu — un padari to par savu apzinātības praksi. Pēc nedēļas tu pamanīsi, ka šī ieraduma kvalitāte ir mainījusies. Pēc mēneša tu pamanīsi, ka mainās arī tavs noskaņojums dienas laikā.
+TXT,
+            ],
+            [
+                'title' => 'Elpošanas tehnika 4-7-8: ātrs ceļš uz mieru',
+                'body' => <<<'TXT'
+Elpošanas tehnika 4-7-8 ir viens no vienkāršākajiem un ātrākajiem veidiem, kā nomierināt nervu sistēmu. To izstrādāja ārsts Endrjū Veils, balstoties uz seno jogas elpošanas praksi pranajāmu.
+
+Princips ir vienkāršs: tu ieelpo četras sekundes, aiztur elpu septiņas sekundes un izelpo astoņas sekundes.
+
+Šī tehnika darbojas tāpēc, ka ilgāka izelpa nekā ieelpa stimulē klejotājnervu, kas savukārt aktivizē parasimpātisko nervu sistēmu — to daļu, kas atbild par mieru un atveseļošanos. Sirds sitieni palēninās, muskuļi atslābst, asinsspiediens pazeminās.
+
+Atrod ērtu pozu — vēlams sēdus ar muguru taisni. Pilnībā izelpo caur muti. Pēc tam aizver muti un ieelpo caur degunu, skaitot līdz četri. Aiztur elpu, skaitot līdz septiņi. Izelpo caur muti ar nelielu šņākšanas skaņu, skaitot līdz astoņi. Tas ir viens cikls.
+
+Sākumā veic ne vairāk kā četrus ciklus. Tehnikas spēks slēpjas regularitātē, nevis ilgumā. Praktizē divreiz dienā — no rīta tūlīt pēc pamošanās un vakarā pirms gulētiešanas.
+
+Pēc dažām nedēļām, kad ķermenis būs iemācījies šo ritmu, tehnika kļūs par uzticamu rīku stresa brīžos — pirms svarīgas sarunas, satiksmes sastrēgumā, vai brīžos, kad domas sāk skriet pārāk ātri.
+TXT,
+            ],
+            [
+                'title' => 'Pateicības prakse: vienkāršs rituāls labākai dzīvei',
+                'body' => <<<'TXT'
+Pateicība ir kļuvusi par labsajūtas industrijas klišeju, kas ir žēl, jo pamata prakse patiesi ir viens no spēcīgākajiem rīkiem garīgajai veselībai.
+
+Cilvēka smadzenes pēc savas dabas pievērš lielāku uzmanību negatīvajam nekā pozitīvajam. Mūsu senči, kas atcerējās, kuras ogas bija indīgas, dzīvoja ilgāk nekā tie, kas atcerējās, kuras ogas garšoja labi. Mēs esam šo bažīgo cilvēku pēcteči. Tas ir noderīgi, kad uz spēles ir izdzīvošana — un mazāk noderīgi, kad uz spēles ir tas, vai mums patika mūsu otrdiena.
+
+Pateicības prakse ir tīšs labojums šai dabiskajai aizspriedumu sistēmai. Tā neignorē negatīvo — tā vienkārši pievieno datus, ko prāts neapzināti nepamana.
+
+Katru vakaru pirms gulētiešanas pieraksti trīs konkrētas lietas, par kurām esi bijis pateicīgs šodien. Ne "ģimene", bet "veids, kā meita smējās par savu joku vakariņās." Ne "veselība", bet "pastaiga uz veikalu bez sāpēm celī." Konkrētība ir svarīga.
+
+Vispārīgas pateicības pārvēršas par formulu, ko prāts apiet automātiski. Konkrētas pateicības liek faktiski izstaigāt dienas pieredzi un pamanīt mirkļus, kas citādi būtu palaisti garām.
+
+Pēc mēneša šī prakse nepadarīs problēmas par nepastāvošām. Tā mainīs attiecību starp to, ko pamani, un to, ko aizmirsti. Tā pati nedēļa, dzīvota ar un bez prakses, ir atšķirīga nedēļa.
+TXT,
+            ],
+            [
+                'title' => 'Kā meditācija uzlabo miega kvalitāti',
+                'body' => <<<'TXT'
+Bezmiegs reti ir par nogurumu. Tas gandrīz vienmēr ir par aktivizētu nervu sistēmu, kas sastopas ar klusu istabu.
+
+Dienas darbs ir beidzies, uzmanības novērsēji ir atkrituši, un sešpadsmit iepriekšējo stundu neapstrādātais stress beidzot tiek pie vārda. Tieši tāpēc tik daudzi cilvēki nevar aizmigt — ne tāpēc, ka viņi nav noguruši, bet tāpēc, ka viņu ķermenis joprojām ir "ieslēgtā režīmā".
+
+Vakara meditācija piedāvā ceļu uz priekšu. Piecpadsmit minūšu klusa sēdēšana, ideāli stundu vai divas pirms gulētiešanas, dod nervu sistēmai laiku noregulēties, pirms gaismas tiek izslēgtas.
+
+Vislabāk šim mērķim darbojas ķermeņa skenēšana vai lēna elpošanas prakse ar pagarinātu izelpu. Mērķis nav aizmigt — tas pārvērš praksi par vēl vienu izpildes mērķi. Mērķis ir ļaut ķermenim ierasties tur, kur tas patiesībā jau atrodas.
+
+Viens brīdinājums: ja esi pilnīgi izsmelts, meditēšana gultā parasti pārvēršas par snaušanu. Tas ir labi, ja prioritāte ir miegs, bet māca nervu sistēmai saistīt meditācijas spilvenu ar aizmigšanu. Sēdi taisnu muguru, vēlams uz krēsla, un dodies gulēt, kad esi beidzis.
+
+Pēc dažām nedēļām daudzi cilvēki pamana ne tikai labāku miegu, bet arī labāku pēdējās nomoda stundas kvalitāti — tās stundas, ko parasti pavadām, ritinot telefonu, un kuru patiešām gribētu atgūt.
+TXT,
+            ],
+            [
+                'title' => 'Stresa pārvarēšana darba dienā',
+                'body' => <<<'TXT'
+Stress darbā reti ir tikai par konkrēto uzdevumu. Tas ir par to, ka mūsu nervu sistēma nav radīta nepārtrauktai modrībai — un mūsdienu darba diena tieši to no mums prasa.
+
+Pa visu dienu uzkrātais stress nekur nepazūd. Tas paliek ķermenī kā saspringums plecos, kā paātrināta elpa, kā nelielas reakcijas, ko mēs pat nepamanām. Vakarā mēs šo svaru nesam mājās un brīnāmies, kāpēc nespējam atslābt.
+
+Risinājums nav garāks atvaļinājums. Risinājums ir mazas pauzes dienas laikā, kas neļauj stresam pieaugt slāņos.
+
+Reizi stundā veic divu minūšu mikropauzi. Aizver darba e-pastu. Piecelies no krēsla. Veic piecas lēnas elpas — četras sekundes ieelpā, sešas sekundes izelpā. Iztaisno muguru. Atver logu, ja vari, un paskaties uz kaut ko tālāku par ekrānu — kokā, debesīs, mājā pretī.
+
+Šī pauze neatrisinās tavu darba slodzi. Bet tā neļaus stresam uzkrāties. Cilvēks, kas dienā paņem piecas mikropauzes, pārvalda darbu pavisam citādi nekā cilvēks, kas strādā astoņas stundas pēc kārtas bez apstāšanās.
+
+Otrs solis ir vēl vienkāršāks: pēc darba dienas beigām pavadi piecas minūtes klusumā, pirms atver telefonu vai sāc ģimenes vakaru. Šis īsais buferis ļauj apzināti pārslēgties no darba lomas uz mājas lomu — nevis ienest tajā visu dienas saspringumu pleciem.
+
+Stress ir neizbēgams. Bet veids, kā ar to attiecamies, ir prasme — un kā jebkura prasme, to var trenēt.
+TXT,
+            ],
         ];
 
         foreach ($articles as $article) {
