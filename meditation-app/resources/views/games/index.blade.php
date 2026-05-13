@@ -2,11 +2,7 @@
 
     @php
         $games = [
-            ['slug' => 'word-stream',     'title' => 'Vārdu plūsma',     'description' => 'Raksti vārdus, kamēr tie peld garām. Nav steigas, nav sodu.'],
-            ['slug' => 'breath-flow',     'title' => 'Elpas plūsma',     'description' => 'Maigs elpošanas ritma vingrinājums.'],
-            ['slug' => 'zen-garden',      'title' => 'Zen dārzs',      'description' => 'Lēnām grābj rakstus smiltīs.'],
-            ['slug' => 'focus-ripples',   'title' => 'Koncentrēšanās viļņi',   'description' => 'Pieskaries, lai radītu viļņus, un vēro, kā ūdens nomierinās.'],
-            ['slug' => 'floating-leaves', 'title' => 'Peldošās lapas', 'description' => 'Vadi lapas pa klusu strautu.'],
+            ['slug' => 'zen-garden', 'title' => 'Zen dārzs', 'description' => 'Lēnām grābj rakstus smiltīs.'],
         ];
     @endphp
 

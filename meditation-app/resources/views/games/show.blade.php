@@ -1,12 +1,7 @@
 @php
-    $titles = [
-        'word-stream'     => 'Vārdu plūsma',
-        'breath-flow'     => 'Elpas plūsma',
-        'zen-garden'      => 'Zen dārzs',
-        'focus-ripples'   => 'Koncentrēšanās viļņi',
-        'floating-leaves' => 'Peldošās lapas',
-    ];
-    $gameTitle = $titles[$slug] ?? ucwords(str_replace('-', ' ', $slug));
+    abort_unless($slug === 'zen-garden', 404);
+
+    $gameTitle = 'Zen dārzs';
 @endphp
 
 <x-layouts.app :title="$gameTitle">
