@@ -9,6 +9,16 @@
             <a href="{{ route('admin.dashboard') }}" class="btn btn-ghost btn-sm rounded-xl">← Administratora panelis</a>
         </div>
 
+        <div class="mt-8 flex items-center gap-2 flex-wrap">
+            <span class="text-xs uppercase tracking-widest text-base-content/45 mr-2">Kārtot:</span>
+            <a href="{{ route('admin.users.index', ['sort' => 'newest']) }}"
+               class="btn btn-xs rounded-lg {{ $sort === 'newest' ? 'btn-primary' : 'btn-ghost' }}">Jaunākie vispirms</a>
+            <a href="{{ route('admin.users.index', ['sort' => 'oldest']) }}"
+               class="btn btn-xs rounded-lg {{ $sort === 'oldest' ? 'btn-primary' : 'btn-ghost' }}">Vecākie vispirms</a>
+            <a href="{{ route('admin.users.index', ['sort' => 'name']) }}"
+               class="btn btn-xs rounded-lg {{ $sort === 'name' ? 'btn-primary' : 'btn-ghost' }}">Pēc vārda (A–Z)</a>
+        </div>
+
         <div class="mt-10 overflow-x-auto rounded-2xl border border-base-200 bg-base-100">
             <table class="table">
                 <thead>

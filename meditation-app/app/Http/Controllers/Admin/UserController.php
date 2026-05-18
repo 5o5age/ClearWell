@@ -8,10 +8,20 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $sort = $request->query('sort', 'newest');
+
+        $query = User::query();
+        $query = match ($sort) {
+            'oldest' => $query->orderBy('created_at'),
+            'name'   => $query->orderBy('name'),
+            default  => $query->orderByDesc('created_at'),
+        };
+
         return view('admin.users.index', [
-            'users' => User::orderByDesc('created_at')->get(),
+            'users' => $query->get(),
+            'sort'  => in_array($sort, ['newest', 'oldest', 'name'], true) ? $sort : 'newest',
         ]);
     }
 
