@@ -7,6 +7,15 @@
             Publicējis {{ $post->user->name }} · {{ $post->created_at->diffForHumans() }}
         </p>
 
+        @if($post->tags->isNotEmpty())
+            <div class="flex flex-wrap gap-1.5 mt-3">
+                @foreach($post->tags as $tag)
+                    <a href="{{ route('pages.index', ['tag' => $tag->slug]) }}"
+                       class="badge badge-ghost badge-sm rounded-lg hover:badge-primary">{{ $tag->name }}</a>
+                @endforeach
+            </div>
+        @endif
+
         <div class="prose mt-8 whitespace-pre-wrap text-base-content/80 leading-relaxed">
             {{ $post->body }}
         </div>

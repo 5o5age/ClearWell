@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        $this->call(TagSeeder::class);
         $this->call(PostSeeder::class);
         $this->call(AudioSeeder::class);
     }

@@ -15,8 +15,26 @@
             @endauth
         </div>
 
+        @if($tags->isNotEmpty())
+            <div class="mt-8 flex items-center gap-2 flex-wrap">
+                <span class="text-xs uppercase tracking-widest text-base-content/45 mr-2">Filtrēt:</span>
+                <a href="{{ route('pages.index') }}"
+                   class="btn btn-xs rounded-lg {{ !$activeTag ? 'btn-primary' : 'btn-ghost' }}">Visi</a>
+                @foreach($tags as $tag)
+                    <a href="{{ route('pages.index', ['tag' => $tag->slug]) }}"
+                       class="btn btn-xs rounded-lg {{ $activeTag === $tag->slug ? 'btn-primary' : 'btn-ghost' }}">{{ $tag->name }}</a>
+                @endforeach
+            </div>
+        @endif
+
         @if($posts->isEmpty())
-            <p class="mt-12 text-base-content/40 italic">Vēl nav publicēts neviens raksts.</p>
+            <p class="mt-12 text-base-content/40 italic">
+                @if($activeTag)
+                    Šajā tagā vēl nav neviena raksta.
+                @else
+                    Vēl nav publicēts neviens raksts.
+                @endif
+            </p>
         @else
             <div class="mt-10 grid gap-5">
                 @foreach($posts as $post)
@@ -32,6 +50,14 @@
                                 <p class="text-xs text-base-content/35 mt-1">
                                     Publicējis {{ $post->user->name }} · {{ $post->created_at->diffForHumans() }}
                                 </p>
+                                @if($post->tags->isNotEmpty())
+                                    <div class="relative z-10 flex flex-wrap gap-1.5 mt-2">
+                                        @foreach($post->tags as $tag)
+                                            <a href="{{ route('pages.index', ['tag' => $tag->slug]) }}"
+                                               class="badge badge-ghost badge-sm rounded-lg hover:badge-primary">{{ $tag->name }}</a>
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <p class="text-sm text-base-content/60 mt-3 line-clamp-3">{{ \Illuminate\Support\Str::limit($post->body, 220) }}</p>
                             </div>
 

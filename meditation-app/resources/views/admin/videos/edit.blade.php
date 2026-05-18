@@ -33,6 +33,8 @@
                 <p class="text-xs text-base-content/40 mt-2">Pašreizējais: {{ basename($video->file_path) }}</p>
             </div>
 
+            @include('admin._tag-selector')
+
             <div class="flex items-center gap-3 pt-2">
                 <button type="submit" class="btn btn-primary rounded-xl">Saglabāt izmaiņas</button>
                 <a href="{{ route('video.index') }}" class="btn btn-ghost rounded-xl">Atcelt</a>

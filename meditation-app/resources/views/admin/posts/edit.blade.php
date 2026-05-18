@@ -26,6 +26,8 @@
                     class="textarea textarea-bordered w-full rounded-xl">{{ old('body', $post->body) }}</textarea>
             </div>
 
+            @include('admin._tag-selector')
+
             <div class="flex items-center gap-3 pt-2">
                 <button type="submit" class="btn btn-primary rounded-xl">Saglabāt izmaiņas</button>
                 <a href="{{ route('pages.index') }}" class="btn btn-ghost rounded-xl">Atcelt</a>

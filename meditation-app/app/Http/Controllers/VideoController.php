@@ -2,22 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $activeTag = $request->query('tag');
+
+        $query = Video::with(['user', 'tags'])->latest();
+        if ($activeTag) {
+            $query->whereHas('tags', fn($q) => $q->where('slug', $activeTag));
+        }
+
         return view('video.index', [
-            'videos' => Video::with('user')->latest()->get(),
+            'videos' => $query->get(),
+            'tags' => Tag::orderBy('name')->get(),
+            'activeTag' => $activeTag,
         ]);
     }
 
     public function create()
     {
-        return view('admin.videos.create');
+        return view('admin.videos.create', [
+            'tags' => Tag::orderBy('name')->get(),
+            'selectedTagIds' => [],
+        ]);
     }
 
     public function store(Request $request)
@@ -26,13 +39,17 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'file' => 'required|file|mimes:mp4,webm,mov,mkv|max:204800',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         $data['file_path'] = $request->file('file')->store('videos', 'public');
         $data['user_id'] = $request->user()->id;
-        unset($data['file']);
+        $tagIds = $data['tags'] ?? [];
+        unset($data['file'], $data['tags']);
 
-        Video::create($data);
+        $video = Video::create($data);
+        $video->tags()->sync($tagIds);
 
         return redirect()
             ->route('video.index')
@@ -41,7 +58,11 @@ class VideoController extends Controller
 
     public function edit(Video $video)
     {
-        return view('admin.videos.edit', ['video' => $video]);
+        return view('admin.videos.edit', [
+            'video' => $video,
+            'tags' => Tag::orderBy('name')->get(),
+            'selectedTagIds' => $video->tags()->pluck('tags.id')->all(),
+        ]);
     }
 
     public function update(Request $request, Video $video)
@@ -50,15 +71,19 @@ class VideoController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'file' => 'nullable|file|mimes:mp4,webm,mov,mkv|max:204800',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         if ($request->hasFile('file')) {
             Storage::disk('public')->delete($video->file_path);
             $data['file_path'] = $request->file('file')->store('videos', 'public');
         }
-        unset($data['file']);
+        $tagIds = $data['tags'] ?? [];
+        unset($data['file'], $data['tags']);
 
         $video->update($data);
+        $video->tags()->sync($tagIds);
 
         return redirect()
             ->route('video.index')
