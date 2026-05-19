@@ -57,8 +57,14 @@
                             Parole
                         </label>
                         <input id="password" name="password" type="password" required autocomplete="new-password"
+                               minlength="8"
+                               pattern="(?=.*[^A-Za-z0-9]).{8,}"
+                               title="Vismaz 8 rakstzīmes un viens simbols (piem. !@#?)"
                                class="input input-bordered w-full rounded-2xl h-12 px-5 bg-base-100 border-base-200 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all text-sm placeholder:text-base-content/30"
                                placeholder="Vismaz 8 rakstzīmes">
+                        <p class="mt-2 text-xs text-base-content/45">
+                            Vismaz 8 rakstzīmes un viens simbols (piem. !@#?).
+                        </p>
                         @error('password')
                             <p class="mt-2 text-xs text-error/80">{{ $message }}</p>
                         @enderror
