@@ -38,7 +38,7 @@ class VideoController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file|mimes:mp4,webm,mov,mkv|max:204800',
+            'file' => 'required|file|mimes:mp4,webm,mov,mkv|max:524288',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
         ]);
@@ -70,7 +70,7 @@ class VideoController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'nullable|file|mimes:mp4,webm,mov,mkv|max:204800',
+            'file' => 'nullable|file|mimes:mp4,webm,mov,mkv|max:524288',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
         ]);

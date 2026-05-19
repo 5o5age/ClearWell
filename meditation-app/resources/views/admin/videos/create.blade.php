@@ -26,7 +26,7 @@
             </div>
 
             <div>
-                <label class="label"><span class="label-text">Video fails (mp4, webm, mov, mkv — līdz 200 MB)</span></label>
+                <label class="label"><span class="label-text">Video fails (mp4, webm, mov, mkv — līdz 512 MB)</span></label>
                 <input type="file" name="file" accept="video/*" required
                     class="file-input file-input-bordered w-full rounded-xl" />
             </div>

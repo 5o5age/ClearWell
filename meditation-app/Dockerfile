@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-install -j$(nproc) pdo_pgsql zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+COPY docker/php.ini /usr/local/etc/php/conf.d/zz-app.ini
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
