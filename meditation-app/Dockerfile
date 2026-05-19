@@ -3,7 +3,7 @@ FROM php:8.4-cli-bookworm
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git unzip curl ca-certificates gnupg \
+        git unzip curl ca-certificates gnupg ffmpeg \
         libzip-dev libpq-dev \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
