@@ -65,12 +65,6 @@
                         @enderror
                     </div>
 
-                    <label for="remember_me" class="flex items-center gap-2.5 cursor-pointer select-none">
-                        <input id="remember_me" name="remember" type="checkbox"
-                               class="checkbox checkbox-sm checkbox-primary rounded-md">
-                        <span class="text-sm text-base-content/60">Atcerēties mani šajā ierīcē</span>
-                    </label>
-
                     <button type="submit"
                             class="btn btn-primary w-full rounded-2xl h-12 min-h-0 text-sm font-medium shadow-md shadow-primary/20 inline-flex items-center justify-center leading-none mt-2">
                         Pieteikties
